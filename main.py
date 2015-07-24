@@ -21,7 +21,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.animation import Animation
-from kivy.properties import StringProperty, ObjectProperty, NumericProperty
+from kivy.properties import StringProperty, ObjectProperty, NumericProperty, ListProperty
 from kivy.uix.progressbar import ProgressBar
 from random import choice, shuffle
 from os.path import sep
@@ -31,7 +31,7 @@ from kivy.utils import platform
 import time
 from game_tools import *
 
-__version__ = '0.1.3'
+__version__ = '0.1.5'
 
 
 DEFAULT_SHOWTIME = 2
@@ -40,8 +40,8 @@ MAX_NBITEMS = None
 
 
 class MemoryButton(Button):
-    done=False
-    playsound=True
+    done = False
+    playsound = True
     filenameSound = StringProperty(None)
     filenameIcon = StringProperty(None)
     sound = ObjectProperty(None)
@@ -77,6 +77,7 @@ class MemoryButton(Button):
                     self.parent.first = None
                 elif self.parent.first.filenameIcon == self.filenameIcon:
                     print "youhou!!"
+                    self.parent.score = self.parent.score[0]+1, self.parent.score[1]
                     self.parent.left += 1
                     if self.playsound:
                         if self.sound.status != 'stop':
@@ -95,9 +96,9 @@ class MemoryButton(Button):
                         Clock.unschedule(self.parent.elapsed_time)
 
                 else:
-                    self.parent.missed += 1
+                    self.parent.score = self.parent.score[0], self.parent.score[1]+1
                     self.parent.first.background_down,self.parent.first.background_normal = self.parent.first.background_normal,self.parent.first.background_down
-                    self.parent.first =None
+                    self.parent.first = None
 
 
 class MemoryLayout(GridLayout):
@@ -105,7 +106,7 @@ class MemoryLayout(GridLayout):
     items = NumericProperty(0)  # total number of items
     level = NumericProperty(0)  # seconds to count down
     countdown = NumericProperty(0)
-    missed = NumericProperty(0)  # number of missed items
+    score = ListProperty([0, 0])  # number of missed items
     elapsed = NumericProperty(0)
 
     def __init__(self, **kwargs):
@@ -165,7 +166,7 @@ class MemoryLayout(GridLayout):
         self.first = None
         self.left = 0
         self.elapsed = 0
-        self.missed = 0
+        self.score = [0, 0]
         self.hide_buttons()
         self.state = ''
         self.update_nb_items()
@@ -212,7 +213,7 @@ class MemoryLayout(GridLayout):
     def game_over(self):
         
         # calculate score
-        score = 100./self.level + 100.*self.items - 10.*self.missed + 100./self.elapsed
+        score = str(self.score[0]) + '-' + str(self.score[1])
         print "done!", score
         self.save_level()
         content2 = BoxLayout(orientation='vertical', spacing=10)
@@ -243,10 +244,18 @@ class MemoryLayout(GridLayout):
         action.add_widget(credits_btn)
         content2.add_widget(action)
 
-        popup = PopupGameOver(title='Congratulations! your score: %d' % int(score),
+        if self.score[0] > self.score[1]:
+            greeting = "Congratulations!"
+        elif self.score[1] > self.score[0]:
+            greeting = "Oh no! You've been defeated."
+        else:
+            greeting = "What a game, it was a tie!"
+
+        popup = PopupGameOver(title=greeting + ' Your score was: %s' % str(score),
                               content=content2,
                               size_hint=(0.5, 0.5), pos_hint={'x': 0.25, 'y': 0.25},
                               auto_dismiss=False)
+
         replay_btn.bind(on_press=popup.replay)
         replay_btn.bind(on_press=self.restart_game)
         credits_btn.bind(on_press=popup.credits)
@@ -308,6 +317,7 @@ class PopupGameOver(Popup):
         popup.open()
 
 
+
 class LabelTimeSlider(Label):
     def update(self, instance, value):
         self.text = "Initial Thinking time: %d s" % int(value)
@@ -327,14 +337,14 @@ class MyPb(ProgressBar):
         self.max = value
     
 
-class LabelScore(Label):
-    def update_time(self,instance,value):
+class LabelTime(Label):
+    def update_time(self, instance, value):
         self.text = "Time: %0.2f s" % value
 
 
-class LabelMissed(Label):
+class LabelScore(Label):
     def update(self, instance, value):
-        self.text = "Missed: %d" % value
+        self.text = "Score: %d - %d" % (value[0], value[1])
 
 
 def show_missing_sounds():
@@ -379,16 +389,15 @@ class ProSoccerMemApp(App):
 
         pb = MyPb(max=items, size_hint=(0.55, 1), ml=g)
         
-        score = LabelScore(text="Time:  0 s", size_hint=(0.15,1))
-        missed = LabelMissed(text="Missed:  0", size_hint=(0.15,1))
-        
+        timing = LabelTime(text="Time:  0 s", size_hint=(0.15, 1))
+        score = LabelScore(text="Score:  0 - 0", size_hint=(0.15, 1))
         config.add_widget(pb)
+        config.add_widget(timing)
         config.add_widget(score)
-        config.add_widget(missed)
         config.add_widget(sound)
         
-        g.bind(missed=missed.update)     
-        g.bind(elapsed=score.update_time)
+        g.bind(score=score.update)
+        g.bind(elapsed=timing.update_time)
         g.bind(left=pb.found_an_item)
         g.bind(items=pb.new_nb_items)
 

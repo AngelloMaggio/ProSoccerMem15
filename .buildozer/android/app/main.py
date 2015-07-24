@@ -1,13 +1,6 @@
 """
-Copyright (c) 2012, Sylvain Alborini
+Copyright (c) 2015, Angello Maggio
 All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-    Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import kivy
@@ -28,288 +21,271 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.animation import Animation
-from kivy.properties import StringProperty, ObjectProperty,NumericProperty
+from kivy.properties import StringProperty, ObjectProperty, NumericProperty, ListProperty
 from kivy.uix.progressbar import ProgressBar
-from random import choice,shuffle
-from glob import glob
-from os.path import dirname, join, basename,sep
+from random import choice, shuffle
+from os.path import sep
 import json
 from kivy.core.window import Window
 from kivy.utils import platform
 import time
+from game_tools import *
+
+__version__ = '0.1.5'
 
 
-__version__ = '0.1'
-
-
-DEFAULT_SHOWTIME = 10
-DEFAULT_NBITEMS = 12
+DEFAULT_SHOWTIME = 2
+DEFAULT_NBITEMS = 4
 MAX_NBITEMS = None
 
 
-
-def bestRatio(nb,width,height):
-    row=1
-    correctRatio=1.
-    minErr=None
-    nbparrow = nb/row
-    if nb%row !=0:
-        nbparrow+=1
-    x = float(width)/nbparrow
-    y = float(height)/row
-    ratio=x/y
-    minErr=abs(ratio-correctRatio)
-    while ratio<correctRatio:
-        row+=1
-        nbparrow = nb/row
-        if nb%row !=0:
-            nbparrow+=1
-        x = float(width)/nbparrow
-        y = float(height)/row
-        ratio=x/y
-        if abs(ratio-correctRatio)>minErr:
-            row-=1
-        minErr = abs(ratio-correctRatio)
-    return row
-
 class MemoryButton(Button):
-    done=False
-    playsound=True
+    done = False
+    playsound = True
     filenameSound = StringProperty(None)
     filenameIcon = StringProperty(None)
     sound = ObjectProperty(None)
     background = ObjectProperty(None)
     background_hide = ObjectProperty(None)
-    #background_down = ObjectProperty(None)
+    # background_down = ObjectProperty(None)
     background_normal = ObjectProperty(None)
 
     def on_filenameSound(self, instance, value):
         # the first time that the filename is set, we are loading the sample
         if self.sound is None:
             self.sound = SoundLoader.load(value)
-    
+
     def on_filenameIcon(self, instance, value):
         # the first time that the filename is set, we are loading the sample
         if self.background_normal is None:
-            self.background_normal=value
+            self.background_normal = value
             self.background = value
             self.background_hide = self.background_down
-            
+
     @classmethod
-    def toggleSound(cls,instance):
+    def toggle_sound(cls, instance):
         instance.text = ["Sound On" if instance.state == 'normal' else "Sound Off"][0]
         cls.playsound = instance.state == 'normal'
 
     def on_press(self):
-        if self.parent.state=='OK' and not self.done: 
+        if self.parent.state == 'OK' and not self.done:
             if self.parent.first is None:
                 self.parent.first = self
                 self.background_down,self.background_normal = self.background_normal,self.background_down
-            else:                
+            else:
                 if self is self.parent.first:
-                    self.parent.first==None
-                    
+                    self.parent.first = None
                 elif self.parent.first.filenameIcon == self.filenameIcon:
                     print "youhou!!"
-                    self.parent.left+=1
+                    self.parent.score = self.parent.score[0]+1, self.parent.score[1]
+                    self.parent.left += 1
                     if self.playsound:
                         if self.sound.status != 'stop':
                             self.sound.stop()
                         self.sound.play()
-                    
-                    self.background_down,self.background_normal = self.background,self.background
-                    self.parent.first.background_down,self.parent.first.background_normal = self.parent.first.background,self.parent.first.background
-                    self.done=True
-                    self.parent.first.done=True
-                    self.parent.first = None
-                    
-                    #check termination
-                    if self.parent.left == self.parent.items:
-                        self.parent.gameOver()
-                        Clock.unschedule(self.parent.elapsedTime)
 
-                else:                    
-                    self.parent.missed += 1
+                    self.background_down, self.background_normal = self.background, self.background
+                    self.parent.first.background_down, \
+                        self.parent.first.background_normal = self.parent.first.background, self.parent.first.background
+                    self.done = True
+                    self.parent.first.done = True
+                    self.parent.first = None
+                    # check termination
+                    if self.parent.left == self.parent.items:
+                        self.parent.game_over()
+                        Clock.unschedule(self.parent.elapsed_time)
+
+                else:
+                    self.parent.score = self.parent.score[0], self.parent.score[1]+1
                     self.parent.first.background_down,self.parent.first.background_normal = self.parent.first.background_normal,self.parent.first.background_down
-                    self.parent.first =None
-                
+                    self.parent.first = None
+
 
 class MemoryLayout(GridLayout):
-    left = NumericProperty(0)   #left items to find
-    items = NumericProperty(0)  #total number of items
-    level = NumericProperty(0)  #seconds to count down
+    left = NumericProperty(0)   # left items to find
+    items = NumericProperty(0)  # total number of items
+    level = NumericProperty(0)  # seconds to count down
     countdown = NumericProperty(0)
-    missed = NumericProperty(0) # number of missed items
+    score = ListProperty([0, 0])  # number of missed items
     elapsed = NumericProperty(0)
 
     def __init__(self, **kwargs):
         super(MemoryLayout, self).__init__(**kwargs)
         self.state = ""
-        self.first=None
-        self.level=kwargs["level"]
-        self.items=kwargs["items"]
-        self.countdown= self.level
+        self.first = None
+        self.level = kwargs["level"]
+        self.items = kwargs["items"]
+        self.countdown = self.level
 
-    def toggleButtons(self,state):
+    def toggle_buttons(self, state):
         for i in self.children:
-            i.background_down,i.background_normal = i.background_normal,i.background_down
-        self.state=state 
+            i.background_down, i.background_normal = i.background_normal, i.background_down
+        self.state = state
 
-    def hideButtons(self):
+    def hide_buttons(self):
         for i in self.children:
-            i.done=False
-            i.background_down,i.background_normal = i.background_hide,i.background_hide
+            i.done = False
+            i.background_down, i.background_normal = i.background_hide, i.background_hide
             
-    def showButtons(self):
+    def show_buttons(self):
         for i in self.children:
             i.background_normal = i.background
             
-    def elapsedTime(self,dt):
+    def elapsed_time(self, dt):
         self.elapsed += dt
 
-    def startGame(self,dt):
+    def start_game(self, dt):
         self.reset()
-        Clock.schedule_interval(self.initialCountdown,1)
+        Clock.schedule_interval(self.initial_countdown, 1)
         
-    def initialCountdown(self,dt):
+    def initial_countdown(self, dt):
         if self.countdown == -1:
-            Clock.unschedule(self.initialCountdown)
-            self.toggleButtons("OK")
-            Clock.schedule_interval(self.elapsedTime,0.1)
+            Clock.unschedule(self.initial_countdown)
+            self.toggle_buttons("OK")
+            Clock.schedule_interval(self.elapsed_time, 0.1)
         else:
-            if not hasattr(self.parent.parent,'countdown'):
-                self.parent.parent.countdown=Label(text="")
+            if not hasattr(self.parent.parent, 'countdown'):
+                self.parent.parent.countdown = Label(text="")
                 self.parent.parent.add_widget(self.parent.parent.countdown)
             popup=self.parent.parent.countdown
-            popup.text=''
-            popup.font_size=12
-            popup.color=(0,0,0,1)
-            popup.text=str(self.countdown)
-            Animation(color=(1,1,1,0),font_size=150).start(popup)
+            popup.text = ''
+            popup.font_size = 12
+            popup.color = (0, 0, 0, 1)
+            popup.text = str(self.countdown)
+            Animation(color=(1, 1, 1, 0), font_size=150).start(popup)
             self.countdown -= 1
 
-    def resetTime(self,instance,newLevel):
-        self.level=int(newLevel)
+    def reset_time(self, instance, new_level):
+        self.level = int(new_level)
 
-    def resetNbItem(self,instance,newNb):
-        self.items = int(newNb)
+    def reset_nb_item(self, instance, new_nb):
+        self.items = int(new_nb)
 
     def reset(self):
         self.countdown = self.level
         self.first = None
         self.left = 0
         self.elapsed = 0
-        self.missed = 0
-        self.hideButtons()
+        self.score = [0, 0]
+        self.hide_buttons()
         self.state = ''
-        self.updateNbItems()
+        self.update_nb_items()
  
-    def restartGame(self,inst):
+    def restart_game(self, inst):
         
         self.reset()
-        self.showButtons()
-        Clock.schedule_interval(self.initialCountdown,1)
+        self.show_buttons()
+        Clock.schedule_interval(self.initial_countdown, 1)
 
-    def updateNbItems(self):
+    def update_nb_items(self):
+
         if self.items != len(self.children):
-            #update self.rows to keep acceptable ratio
-            newRow = bestRatio(self.items*2,self.width,self.height)
+            # update self.rows to keep acceptable ratio
+            new_row = best_ratio(self.items*2, self.width, self.height)
             self.clear_widgets()
-            self.rows=newRow
+            self.rows = new_row
             shuffle(icons)
-            iicons=icons[:self.items]
-            iicons=iicons+iicons
+            iicons = icons[:self.items]
+            iicons = iicons+iicons
             shuffle(iicons)
             for i in iicons:
                 s = i.split(".png")[0].split(sep)[1]
-                if sounds.has_key(s):
-                    aSound = choice(sounds[s])
+                if s in sounds:
+                    a_sound = choice(sounds[s])
                 else:
-                    aSound = sounds['default'][0]
+                    a_sound = sounds['default'][0]
 
                 btn = MemoryButton(
                     text="",
                     filenameIcon=i,
-                    filenameSound=aSound,
+                    filenameSound=a_sound,
                     )  
                 self.add_widget(btn)
         else:
             shuffle(self.children)
 
-
-    def saveLevel(self):
-        fileName =  join(App.get_running_app().user_data_dir,'level.dat')
-        with open(fileName,'w') as fd:
-            userData={"items":self.items,"level":self.level}
-            json.dump(userData,fd)
+    def save_level(self):
+        file_name = join(App.get_running_app().user_data_dir, 'level.dat')
+        with open(file_name, 'w') as fd:
+            user_data = {"items": self.items, "level": self.level}
+            json.dump(user_data, fd)
             
-    def gameOver(self):
+    def game_over(self):
         
         # calculate score
-        score = 100./self.level + 100.*self.items - 10.*self.missed + 100./self.elapsed
-        print "done!",score
-        self.saveLevel()
-        content2 = BoxLayout(orientation='vertical',spacing=10)
-        #content.add_widget(Label(text='score: %d'%int(score)))
-        content = BoxLayout(orientation='vertical',size_hint_y=.7)
-        #change show time
-        labelSlider = LabelTimeSlider(text='Initial Show time: %s s'%self.level)
-        content.add_widget(labelSlider)
-        newLevel = Slider(min=1, max=30, value=self.level)
-        content.add_widget(newLevel)
-        newLevel.bind(value = labelSlider.update)
-        newLevel.bind(value = self.resetTime) 
+        score = str(self.score[0]) + '-' + str(self.score[1])
+        print "done!", score
+        self.save_level()
+        content2 = BoxLayout(orientation='vertical', spacing=10)
+        # content.add_widget(Label(text='score: %d'%int(score)))
+        content = BoxLayout(orientation='vertical', size_hint_y=.7)
+        # change show time
+        label_slider = LabelTimeSlider(text='Initial Show time: %s s'%self.level)
+        content.add_widget(label_slider)
+        new_level = Slider(min=1, max=30, value=self.level)
+        content.add_widget(new_level)
+        new_level.bind(value=label_slider.update)
+        new_level.bind(value=self.reset_time)
 
-
-        #change number of items
-        labelNb = LabelNb(text='Number of items: %s'%self.items)
-        content.add_widget(labelNb)
-        nb_items = Slider(min=5, max = MAX_NBITEMS, value = self.items )
+        # change number of items
+        label_nb = LabelNb(text='Number of items: %s'%self.items)
+        content.add_widget(label_nb)
+        nb_items = Slider(min=5, max=MAX_NBITEMS, value=self.items)
         content.add_widget(nb_items)
-        nb_items.bind(value = labelNb.update)
-        nb_items.bind(value = self.resetNbItem)
+        nb_items.bind(value=label_nb.update)
+        nb_items.bind(value=self.reset_nb_item)
        
         content2.add_widget(content)
 
-        replay = Button(text='Replay!')
-        credits = Button(text='Credits')
-        action = BoxLayout(orientation='horizontal',size_hint_y=.3)
-        action.add_widget(replay)
-        action.add_widget(credits)
+        replay_btn = Button(text='Replay!')
+        credits_btn = Button(text='Credits')
+        action = BoxLayout(orientation='horizontal', size_hint_y=.3)
+        action.add_widget(replay_btn)
+        action.add_widget(credits_btn)
         content2.add_widget(action)
 
+        if self.score[0] > self.score[1]:
+            greeting = "Congratulations!"
+        elif self.score[1] > self.score[0]:
+            greeting = "Oh no! You've been defeated."
+        else:
+            greeting = "What a game, it was a tie!"
 
-        popup = PopupGameOver(title='Congratulations! your score: %d'%int(score),
+        popup = PopupGameOver(title=greeting + ' Your score was: %s' % str(score),
                               content=content2,
-                              size_hint=(0.5, 0.5),pos_hint={'x':0.25, 'y':0.25},
+                              size_hint=(0.5, 0.5), pos_hint={'x': 0.25, 'y': 0.25},
                               auto_dismiss=False)
-        replay.bind(on_press=popup.replay)
-        replay.bind(on_press=self.restartGame)
-        credits.bind(on_press=popup.credits)
+
+        replay_btn.bind(on_press=popup.replay)
+        replay_btn.bind(on_press=self.restart_game)
+        credits_btn.bind(on_press=popup.credits)
         
         popup.open()
 
+
 class ScrollableLabel(ScrollView):
    
-    '''
+    """
    use it thisly -> scrollablelabel = ScrollableLabel().build("put your big bunch of text right here")
        or
    ScrollableLabel().build() <- thusly with no argument to just get a very big bunch of text as a demo
    
    scrolls x and y default
-   '''
- 
-    def build(self,textinput,size):
-        self.summary_label = Label(text="",text_size=(size,None),
-                              size_hint_y=None,size_hint_x=None)
+    """
+    def __init__(self):
+        self.summary_label = Label(text="")
+
+        self.sv = ScrollView(do_scroll_x=False)
+        # it does not scroll the scroll view.
+
+    def build(self, textinput, size):
+
+        self.summary_label = Label(text="", text_size=(size, None),
+                                   size_hint_y=None, size_hint_x=None)
        
         self.summary_label.bind(texture_size=self._set_summary_height)
         # remove the above bind
         self.summary_label.text = str(textinput)
-       
-        #and try setting height in the following line
-        self.sv = ScrollView(do_scroll_x=False)
-        # it does not scroll the scroll view.
        
         self.sv.add_widget(self.summary_label)
        
@@ -318,132 +294,124 @@ class ScrollableLabel(ScrollView):
     def _set_summary_height(self, instance, size):
         instance.height = size[1]
         instance.width = size[0]
-       
+
+
 class PopupGameOver(Popup):
-    def replay(self,inst):
-        
+
+    def replay(self, inst):
         self.dismiss()
-     
-    def credits(self,inst):
+
+    def credits(self, inst):
         
-        with open(join(dirname(__file__),'credits'),'r') as f:
-            ti=f.read()
+        with open(join(dirname(__file__), 'credits'), 'r') as f:
+            ti = f.read()
         content = BoxLayout(orientation='vertical')
-        close = Button(text='Close',size_hint=(1,.1))
-        sv = ScrollableLabel().build(ti,Window.width-20)
+        close = Button(text='Close', size_hint=(1, .1))
+        sv = ScrollableLabel().build(ti, Window.width-20)
         content.add_widget(sv)
         content.add_widget(close)
         popup = Popup(title='Credits:',
-                        content=content, auto_dismiss=False
-                    ) 
+                      content=content, auto_dismiss=False
+                      )
         close.bind(on_press=popup.dismiss)
         popup.open()
 
+
+
 class LabelTimeSlider(Label):
-    def update(self,instance,value):
-        self.text="Initial Thinking time: %d s"%int(value)
+    def update(self, instance, value):
+        self.text = "Initial Thinking time: %d s" % int(value)
+
 
 class LabelNb(Label):
-    def update(self,instance,value):
-        self.text="Number of players: %d"%int(value)
+    def update(self, instance, value):
+        self.text = "Number of players: %d" % int(value)
+
 
 class MyPb(ProgressBar):
-    def foundAnItem(self,instance,value):
+    def found_an_item(self, instance, value):
         self.value = value
 
-    def newNbItems(self,instance,value):
+    def new_nb_items(self, instance, value):
         self.value = value
         self.max = value
     
 
+class LabelTime(Label):
+    def update_time(self, instance, value):
+        self.text = "Time: %0.2f s" % value
+
+
 class LabelScore(Label):
-    def updateTime(self,instance,value):
-        self.text="Time: %0.2f s"%value
+    def update(self, instance, value):
+        self.text = "Score: %d - %d" % (value[0], value[1])
 
-class LabelMissed(Label):
-    def update(self,instance,value):
-        self.text="Missed: %d"%value
 
-def loadData():
-    sounds={}
-    icons=[]
-    for s in glob(join(dirname(__file__),"sounds", '*.wav')):
-        name=basename(s[:-4]).split("_")[0]
-        if sounds.has_key(name):
-            sounds[name].append(s)
-        else:
-            sounds[name]=[s]
-    for i in glob(join(dirname(__file__),"icons", '*.png')):
-        icons.append(i)
-    return sounds,icons
-
-def showmissingSounds():
-    missing=[]
+def show_missing_sounds():
+    missing = []
     for i in icons:
         s = i.split(".png")[0].split(sep)[1]
-        if not sounds.has_key(s):
+        if sounds not in s:
             missing.append(s)
-    print "missing sounds for %d players: %s"%(len(missing),missing)
- 
+    print "missing sounds for %d players: %s" % (len(missing), missing)
 
-class MyAnimalsApp(App):
-    
-    def loadLevel(self):
-        
-        fileName =  join(App.get_running_app().user_data_dir,'level.dat')
+
+def load_level():
         try:
-            with open(fileName) as fd:
-                userData={}
-                userData = json.load(fd)
-                return userData["items"],userData["level"]
-        except:
-            return DEFAULT_NBITEMS , DEFAULT_SHOWTIME
+            file_name = join(App.get_running_app().user_data_dir,'level.dat')
+            with open(file_name) as fd:
+                user_data = json.load(fd)
+                #return user_data["items"], user_data["level"]
+                return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
+
+        except IOError:
+            return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
+
+
+class ProSoccerMemApp(App):
         
     def build(self):
+
         self.icon = 'memoIcon.png'
         self.title = 'Pro Soccer Mem 15'
-        global sounds,icons
-        sounds,icons=loadData()
-        #showmissingSounds()
+        global sounds, icons
+        sounds, icons = load_data()
+        # showmissingSounds()
 
         global MAX_NBITEMS
         MAX_NBITEMS = len(icons)
-        items,level = self.loadLevel()
-        g = MemoryLayout(rows=4,items = items, level=level,size_hint=(1,.9))
-        config = BoxLayout(orientation='horizontal',spacing=10, size_hint=(1,.1))
+        items, level = load_level()
+        g = MemoryLayout(rows=4, items=items, level=level, size_hint=(1,.9))
+        config = BoxLayout(orientation='horizontal', spacing=10, size_hint=(1, .1))
         
-        sound = ToggleButton(text='Sound On', size_hint=(0.15,1))
-        sound.bind(on_press=MemoryButton.toggleSound)
-        
+        sound = ToggleButton(text='Sound On', size_hint=(0.15, 1))
+        sound.bind(on_press=MemoryButton.toggle_sound)
 
-        pb = MyPb(max=items, size_hint=(0.55,1),ml=g)
+        pb = MyPb(max=items, size_hint=(0.55, 1), ml=g)
         
-        score = LabelScore(text="Time:  0 s",size_hint=(0.15,1))
-        missed =  LabelMissed(text="Missed:  0",size_hint=(0.15,1))
-        
+        timing = LabelTime(text="Time:  0 s", size_hint=(0.15, 1))
+        score = LabelScore(text="Score:  0 - 0", size_hint=(0.15, 1))
         config.add_widget(pb)
+        config.add_widget(timing)
         config.add_widget(score)
-        config.add_widget(missed)
         config.add_widget(sound)
         
-        g.bind(missed=missed.update)     
-        g.bind(elapsed=score.updateTime)        
-        g.bind(left=pb.foundAnItem)
-        g.bind(items=pb.newNbItems)
+        g.bind(score=score.update)
+        g.bind(elapsed=timing.update_time)
+        g.bind(left=pb.found_an_item)
+        g.bind(items=pb.new_nb_items)
 
-        playZone = BoxLayout(orientation='vertical')
-        playZone.add_widget(g)
-        playZone.add_widget(config)
+        play_zone = BoxLayout(orientation='vertical')
+        play_zone.add_widget(g)
+        play_zone.add_widget(config)
         
-        root=FloatLayout()
-        root.add_widget(Image(source='court.jpg',allow_stretch=True,keep_ratio=False))
-        root.add_widget(playZone)
+        root = FloatLayout()
+        root.add_widget(Image(source='court.jpg', allow_stretch=True, keep_ratio=False))
+        root.add_widget(play_zone)
         #Clock.schedule_interval(g.initialCountdown,1)
-        Clock.schedule_once(g.startGame,3)
-
-        
+        Clock.schedule_once(g.start_game, 3)
 
         return root
 
 if __name__ in ('__main__', '__android__'):
-    MyAnimalsApp().run()
+    ProSoccerMemApp().run()
