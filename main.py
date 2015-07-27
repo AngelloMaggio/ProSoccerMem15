@@ -23,19 +23,17 @@ from os.path import sep
 from kivy.core.window import Window
 from game_tools import *
 from labels import *
+from narrator import narrate
 
-__version__ = '0.2.25'
+__version__ = '0.2.5'
 
 
 class MemoryButton(Button):
-    done = False
-    playsound = True
     filenameSound = StringProperty(None)
     filenameIcon = StringProperty(None)
     sound = ObjectProperty(None)
     background = ObjectProperty(None)
     background_hide = ObjectProperty(None)
-    # background_down = ObjectProperty(None)
     background_normal = ObjectProperty(None)
 
     def on_filenameSound(self, instance, value):
@@ -66,13 +64,11 @@ class MemoryButton(Button):
 
                 elif self.parent.first.filenameIcon == self.filenameIcon:
 
-                    self.parent.ball_position += 1
+                    self.parent.ball_position, self.parent.narration = narrate(self.parent.ball_position, True)
+
                     if self.parent.ball_position > 3:
-                        self.parent.narration = "Goal Home"
                         self.parent.score = self.parent.score[0]+1, self.parent.score[1]
                         self.parent.ball_position = 0
-                    else:
-                        self.parent.narration = str(self.parent.ball_position)  # narrate(self.parent.ball_position)
                     self.parent.left += 1
 
                     if self.playsound:
@@ -92,13 +88,10 @@ class MemoryButton(Button):
                         Clock.unschedule(self.parent.elapsed_time)
 
                 else:
-                    self.parent.ball_position -= 1
+                    self.parent.ball_position, self.parent.narration = narrate(self.parent.ball_position, False)
                     if self.parent.ball_position < -3:
                         self.parent.score = self.parent.score[0], self.parent.score[1]+1
                         self.parent.ball_position = 0
-                        self.parent.narration = "Goal Away"
-                    else:
-                        self.parent.narration = str(self.parent.ball_position)  # narrate(self.parent.ball_position)
                     self.parent.first.background_down, \
                         self.parent.first.background_normal = self.parent.first.background_normal,\
                         self.parent.first.background_down
@@ -178,6 +171,7 @@ class MemoryLayout(GridLayout):
         self.state = ''
         self.update_nb_items()
         self.ball_position = 0
+        self.narration = "Game has started!"
  
     def restart_game(self, inst):
         
@@ -246,7 +240,9 @@ class MemoryLayout(GridLayout):
         content2.add_widget(content)
         if game_starting:
             replay_btn = Button(text='Play!')
+            self.narration = "Ready to play?"
         else:
+            self.narration = "What a game!"
             replay_btn = Button(text='Replay!')
         credits_btn = Button(text='Credits')
         action = BoxLayout(orientation='horizontal', size_hint_y=.3)
@@ -271,7 +267,6 @@ class MemoryLayout(GridLayout):
         replay_btn.bind(on_press=popup.replay)
         replay_btn.bind(on_press=self.restart_game)
         credits_btn.bind(on_press=popup.credits)
-        
         popup.open()
 
 
@@ -329,6 +324,27 @@ class PopupGameOver(Popup):
         popup.open()
 
 
+class MainMenu(Popup):
+
+    def play(self, inst):
+        self.dismiss()
+
+    def credits(self, inst):
+
+        with open(join(dirname(__file__), 'credits'), 'r') as f:
+            ti = f.read()
+        content = BoxLayout(orientation='vertical')
+        close = Button(text='Close', size_hint=(1, .1))
+        sv = ScrollableLabel().build(ti, Window.width-20)
+        content.add_widget(sv)
+        content.add_widget(close)
+        popup = Popup(title='Credits:',
+                      content=content, auto_dismiss=False
+                      )
+        close.bind(on_press=popup.dismiss)
+        popup.open()
+
+
 class ProSoccerMemApp(App):
         
     def build(self):
@@ -353,7 +369,7 @@ class ProSoccerMemApp(App):
         
         timing = LabelTime(text="Time:  0 s", size_hint=(0.15, 1))
         score = LabelScore(text="Score:  0 - 0", size_hint=(0.15, 1))
-        narration = LabelNarrate(text="Game has started!", size=(1, 1))
+        narration = LabelNarrate(text="Welcome to Pro Soccer Mem 15. Loading...", size=(1, 1))
 
         narrate_box.add_widget(narration)
         config.add_widget(pb)

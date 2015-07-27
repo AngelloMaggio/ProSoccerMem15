@@ -2,7 +2,7 @@ __author__ = 'angellomaggio'
 
 from kivy.uix.label import Label
 from kivy.uix.progressbar import ProgressBar
-import game_tools
+from narrator import narrate
 
 class LabelTime(Label):
     def update_time(self, instance, value):
@@ -26,7 +26,7 @@ class LabelNb(Label):
 
 class LabelNarrate(Label):
     def update(self, instance, value):
-        self.text = game_tools.narrate(value)
+        self.text = value
 
 
 class MyPb(ProgressBar):
