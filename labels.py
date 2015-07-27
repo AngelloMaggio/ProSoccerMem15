@@ -2,7 +2,7 @@ __author__ = 'angellomaggio'
 
 from kivy.uix.label import Label
 from kivy.uix.progressbar import ProgressBar
-
+import game_tools
 
 class LabelTime(Label):
     def update_time(self, instance, value):
@@ -22,6 +22,12 @@ class LabelTimeSlider(Label):
 class LabelNb(Label):
     def update(self, instance, value):
         self.text = "Number of players: %d" % int(value)
+
+
+class LabelNarrate(Label):
+    def update(self, instance, value):
+        self.text = game_tools.narrate(value)
+
 
 class MyPb(ProgressBar):
     def found_an_item(self, instance, value):

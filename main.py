@@ -24,7 +24,7 @@ from kivy.core.window import Window
 from game_tools import *
 from labels import *
 
-__version__ = '0.1.75'
+__version__ = '0.2.00'
 
 
 class MemoryButton(Button):
@@ -59,22 +59,20 @@ class MemoryButton(Button):
         if self.parent.state == 'OK' and not self.done:
             if self.parent.first is None:
                 self.parent.first = self
-                self.background_down,self.background_normal = self.background_normal,self.background_down
+                self.background_down, self.background_normal = self.background_normal, self.background_down
             else:
                 if self is self.parent.first:
                     self.parent.first = None
 
                 elif self.parent.first.filenameIcon == self.filenameIcon:
 
-                    print "youhou!!"
-
                     self.parent.ball_position += 1
                     if self.parent.ball_position > 3:
-                        print "Gooooooal! For the home team!"
+                        self.parent.narration = "Goal Home"
                         self.parent.score = self.parent.score[0]+1, self.parent.score[1]
                         self.parent.ball_position = 0
                     else:
-                        narrate(self.parent.ball_position)
+                        self.parent.narration = str(self.parent.ball_position)  # narrate(self.parent.ball_position)
                     self.parent.left += 1
 
                     if self.playsound:
@@ -98,10 +96,12 @@ class MemoryButton(Button):
                     if self.parent.ball_position < -3:
                         self.parent.score = self.parent.score[0], self.parent.score[1]+1
                         self.parent.ball_position = 0
-                        print "Gooooooal! For the away team!"
+                        self.parent.narration = "Goal Away"
                     else:
-                        narrate(self.parent.ball_position)
-                    self.parent.first.background_down,self.parent.first.background_normal = self.parent.first.background_normal,self.parent.first.background_down
+                        self.parent.narration = str(self.parent.ball_position)  # narrate(self.parent.ball_position)
+                    self.parent.first.background_down, \
+                        self.parent.first.background_normal = self.parent.first.background_normal,\
+                        self.parent.first.background_down
                     self.parent.first = None
 
 
@@ -113,6 +113,7 @@ class MemoryLayout(GridLayout):
     score = ListProperty([0, 0])  # number of missed items
     elapsed = NumericProperty(0)
     ball_position = NumericProperty(0)
+    narration = StringProperty("")
 
     def __init__(self, **kwargs):
         super(MemoryLayout, self).__init__(**kwargs)
@@ -323,8 +324,6 @@ class PopupGameOver(Popup):
         popup.open()
 
 
-
-
 class ProSoccerMemApp(App):
         
     def build(self):
@@ -340,6 +339,7 @@ class ProSoccerMemApp(App):
         items, level = load_level()
         g = MemoryLayout(rows=4, items=items, level=level, size_hint=(1,.9))
         config = BoxLayout(orientation='horizontal', spacing=10, size_hint=(1, .1))
+        narrate_box = BoxLayout(orientation='horizontal', spacing=10, size_hint=(1, .1))
         
         sound = ToggleButton(text='Sound On', size_hint=(0.15, 1))
         sound.bind(on_press=MemoryButton.toggle_sound)
@@ -348,11 +348,15 @@ class ProSoccerMemApp(App):
         
         timing = LabelTime(text="Time:  0 s", size_hint=(0.15, 1))
         score = LabelScore(text="Score:  0 - 0", size_hint=(0.15, 1))
+        narration = LabelNarrate(text="Game has started!", size=(1, 1))
+
+        narrate_box.add_widget(narration)
         config.add_widget(pb)
         config.add_widget(timing)
         config.add_widget(score)
         config.add_widget(sound)
-        
+
+        g.bind(narration=narration.update)
         g.bind(score=score.update)
         g.bind(elapsed=timing.update_time)
         g.bind(left=pb.found_an_item)
@@ -360,8 +364,9 @@ class ProSoccerMemApp(App):
 
         play_zone = BoxLayout(orientation='vertical')
         play_zone.add_widget(g)
+        play_zone.add_widget(narrate_box)
         play_zone.add_widget(config)
-        
+
         root = FloatLayout()
         root.add_widget(Image(source='court.jpg', allow_stretch=True, keep_ratio=False))
         root.add_widget(play_zone)
