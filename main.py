@@ -5,15 +5,12 @@ All rights reserved.
 
 import kivy
 kivy.require('1.0.9')
-from kivy.app import App
 from kivy.clock import Clock
-from kivy.uix.widget import Widget
 from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.slider import Slider
-from kivy.uix.scatter import Scatter
 from kivy.uix.togglebutton import ToggleButton
 from kivy.core.audio import SoundLoader
 from kivy.uix.gridlayout import GridLayout
@@ -25,18 +22,11 @@ from kivy.properties import StringProperty, ObjectProperty, NumericProperty, Lis
 from kivy.uix.progressbar import ProgressBar
 from random import choice, shuffle
 from os.path import sep
-import json
 from kivy.core.window import Window
-from kivy.utils import platform
-import time
 from game_tools import *
+from labels import *
 
-__version__ = '0.1.5'
-
-
-DEFAULT_SHOWTIME = 2
-DEFAULT_NBITEMS = 4
-MAX_NBITEMS = None
+__version__ = '0.1.6'
 
 
 class MemoryButton(Button):
@@ -108,6 +98,7 @@ class MemoryLayout(GridLayout):
     countdown = NumericProperty(0)
     score = ListProperty([0, 0])  # number of missed items
     elapsed = NumericProperty(0)
+    ball_position = NumericProperty(0)
 
     def __init__(self, **kwargs):
         super(MemoryLayout, self).__init__(**kwargs)
@@ -147,7 +138,7 @@ class MemoryLayout(GridLayout):
             if not hasattr(self.parent.parent, 'countdown'):
                 self.parent.parent.countdown = Label(text="")
                 self.parent.parent.add_widget(self.parent.parent.countdown)
-            popup=self.parent.parent.countdown
+            popup = self.parent.parent.countdown
             popup.text = ''
             popup.font_size = 12
             popup.color = (0, 0, 0, 1)
@@ -317,7 +308,6 @@ class PopupGameOver(Popup):
         popup.open()
 
 
-
 class LabelTimeSlider(Label):
     def update(self, instance, value):
         self.text = "Initial Thinking time: %d s" % int(value)
@@ -335,37 +325,6 @@ class MyPb(ProgressBar):
     def new_nb_items(self, instance, value):
         self.value = value
         self.max = value
-    
-
-class LabelTime(Label):
-    def update_time(self, instance, value):
-        self.text = "Time: %0.2f s" % value
-
-
-class LabelScore(Label):
-    def update(self, instance, value):
-        self.text = "Score: %d - %d" % (value[0], value[1])
-
-
-def show_missing_sounds():
-    missing = []
-    for i in icons:
-        s = i.split(".png")[0].split(sep)[1]
-        if sounds not in s:
-            missing.append(s)
-    print "missing sounds for %d players: %s" % (len(missing), missing)
-
-
-def load_level():
-        try:
-            file_name = join(App.get_running_app().user_data_dir,'level.dat')
-            with open(file_name) as fd:
-                user_data = json.load(fd)
-                #return user_data["items"], user_data["level"]
-                return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
-
-        except IOError:
-            return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
 
 
 class ProSoccerMemApp(App):
