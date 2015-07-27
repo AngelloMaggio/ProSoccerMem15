@@ -59,6 +59,7 @@ def load_level():
         except IOError:
             return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
 
+
 def show_missing_sounds(sounds, icons):
     missing = []
     for i in icons:
@@ -66,3 +67,16 @@ def show_missing_sounds(sounds, icons):
         if s not in sounds:
             missing.append(s)
     print "missing sounds for %d players: %s" % (len(missing), missing)
+
+
+def narrate(counter):
+    if abs(counter) == 1:
+        print "He goes pass the midfield."
+    elif abs(counter) == 2:
+        print "He makes plays down the middle!"
+    elif abs(counter) == 3:
+        print "Alone against the goalie!!"
+    elif abs(counter) == 0:
+        print "They are fighting in the middle of the field."
+    else:
+        print "Narrating error! Recieved value: ", counter

@@ -9,7 +9,6 @@ from kivy.clock import Clock
 from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
-from kivy.uix.label import Label
 from kivy.uix.slider import Slider
 from kivy.uix.togglebutton import ToggleButton
 from kivy.core.audio import SoundLoader
@@ -19,14 +18,13 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.animation import Animation
 from kivy.properties import StringProperty, ObjectProperty, NumericProperty, ListProperty
-from kivy.uix.progressbar import ProgressBar
 from random import choice, shuffle
 from os.path import sep
 from kivy.core.window import Window
 from game_tools import *
 from labels import *
 
-__version__ = '0.1.6'
+__version__ = '0.1.75'
 
 
 class MemoryButton(Button):
@@ -65,10 +63,20 @@ class MemoryButton(Button):
             else:
                 if self is self.parent.first:
                     self.parent.first = None
+
                 elif self.parent.first.filenameIcon == self.filenameIcon:
+
                     print "youhou!!"
-                    self.parent.score = self.parent.score[0]+1, self.parent.score[1]
+
+                    self.parent.ball_position += 1
+                    if self.parent.ball_position > 3:
+                        print "Gooooooal! For the home team!"
+                        self.parent.score = self.parent.score[0]+1, self.parent.score[1]
+                        self.parent.ball_position = 0
+                    else:
+                        narrate(self.parent.ball_position)
                     self.parent.left += 1
+
                     if self.playsound:
                         if self.sound.status != 'stop':
                             self.sound.stop()
@@ -86,7 +94,13 @@ class MemoryButton(Button):
                         Clock.unschedule(self.parent.elapsed_time)
 
                 else:
-                    self.parent.score = self.parent.score[0], self.parent.score[1]+1
+                    self.parent.ball_position -= 1
+                    if self.parent.ball_position < -3:
+                        self.parent.score = self.parent.score[0], self.parent.score[1]+1
+                        self.parent.ball_position = 0
+                        print "Gooooooal! For the away team!"
+                    else:
+                        narrate(self.parent.ball_position)
                     self.parent.first.background_down,self.parent.first.background_normal = self.parent.first.background_normal,self.parent.first.background_down
                     self.parent.first = None
 
@@ -161,6 +175,7 @@ class MemoryLayout(GridLayout):
         self.hide_buttons()
         self.state = ''
         self.update_nb_items()
+        self.ball_position = 0
  
     def restart_game(self, inst):
         
@@ -308,23 +323,6 @@ class PopupGameOver(Popup):
         popup.open()
 
 
-class LabelTimeSlider(Label):
-    def update(self, instance, value):
-        self.text = "Initial Thinking time: %d s" % int(value)
-
-
-class LabelNb(Label):
-    def update(self, instance, value):
-        self.text = "Number of players: %d" % int(value)
-
-
-class MyPb(ProgressBar):
-    def found_an_item(self, instance, value):
-        self.value = value
-
-    def new_nb_items(self, instance, value):
-        self.value = value
-        self.max = value
 
 
 class ProSoccerMemApp(App):
@@ -367,7 +365,7 @@ class ProSoccerMemApp(App):
         root = FloatLayout()
         root.add_widget(Image(source='court.jpg', allow_stretch=True, keep_ratio=False))
         root.add_widget(play_zone)
-        #Clock.schedule_interval(g.initialCountdown,1)
+        # Clock.schedule_interval(g.initialCountdown,1)
         Clock.schedule_once(g.start_game, 3)
 
         return root
