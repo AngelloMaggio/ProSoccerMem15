@@ -1,4 +1,9 @@
-__author__ = 'angellomaggio'
+__author__ = 'Angello Maggio'
+
+"""
+Copyright (c) 2015, Angello Maggio
+All rights reserved.
+"""
 
 
 def narrate(counter, forwards):

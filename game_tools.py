@@ -1,3 +1,5 @@
+__author__ = 'Angello Maggio'
+
 """
 Copyright (c) 2015, Angello Maggio
 All rights reserved.
