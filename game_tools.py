@@ -40,26 +40,26 @@ def load_data():
     sounds = {}
     icons = []
     for s in glob(join(dirname(__file__), "sounds", '*.wav')):
-        name=basename(s[:-4]).split("_")[0]
+        name = basename(s[:-4]).split("_")[0]
         if sounds.has_key(name):
             sounds[name].append(s)
         else:
-            sounds[name]=[s]
+            sounds[name] = [s]
     for i in glob(join(dirname(__file__), "icons", '*.png')):
         icons.append(i)
     return sounds, icons
 
 
 def load_level():
-        try:
-            file_name = join(App.get_running_app().user_data_dir, 'level.dat')
-            with open(file_name) as fd:
-                user_data = json.load(fd)
+        #try:
+            #file_name = join(App.get_running_app().user_data_dir, 'level.dat')
+            #with open(file_name) as fd:
+             #   user_data = json.load(fd)
                 #return user_data["items"], user_data["level"]
-                return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
+        return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
 
-        except IOError:
-            return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
+        #except IOError:
+        #    return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
 
 
 def show_missing_sounds(sounds, icons):

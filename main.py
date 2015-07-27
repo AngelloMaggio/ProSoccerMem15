@@ -11,27 +11,46 @@ from kivy.uix.image import Image
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.floatlayout import FloatLayout
 from memory import *
+from game_tools import *
+from kivy.uix.screenmanager import ScreenManager, Screen
 
-__version__ = '0.2.6'
+__version__ = '0.2.75'
+
+
+class MenuScreen(Screen):
+    pass
+
+
+class SettingsScreen(Screen):
+    pass
 
 
 class ProSoccerMemApp(App):
         
     def build(self):
 
+        # Title and icon for program
         self.icon = 'memoIcon.png'
         self.title = 'Pro Soccer Mem 15'
 
+
+        #root = FloatLayout()
+        #root.add_widget(Image(source='court.jpg', allow_stretch=True, keep_ratio=False))
+        #root.add_widget(play_zone)
+        #root.add_widget(sm)
+        # Clock.schedule_interval(g.initialCountdown,1)
+
         items, level = load_level()
-        g = MemoryLayout(rows=4, items=items, level=level, size_hint=(1,.9))
+
+        g = MemoryLayout(rows=4, items=items, level=level, size_hint=(1, .9))
         config = BoxLayout(orientation='horizontal', spacing=10, size_hint=(1, .1))
         narrate_box = BoxLayout(orientation='horizontal', spacing=10, size_hint=(1, .1))
-        
+
         sound = ToggleButton(text='Sound On', size_hint=(0.15, 1))
         sound.bind(on_press=MemoryButton.toggle_sound)
 
         pb = MyPb(max=items, size_hint=(0.55, 1), ml=g)
-        
+
         timing = LabelTime(text="Time:  0 s", size_hint=(0.15, 1))
         score = LabelScore(text="Score:  0 - 0", size_hint=(0.15, 1))
         narration = LabelNarrate(text="Welcome to Pro Soccer Mem 15. Loading...", size=(1, 1))
@@ -52,14 +71,18 @@ class ProSoccerMemApp(App):
         play_zone.add_widget(g)
         play_zone.add_widget(narrate_box)
         play_zone.add_widget(config)
-
         root = FloatLayout()
         root.add_widget(Image(source='court.jpg', allow_stretch=True, keep_ratio=False))
         root.add_widget(play_zone)
-        # Clock.schedule_interval(g.initialCountdown,1)
-        Clock.schedule_once(g.start_game, 3)
 
-        return root
+        # Screen manager
+        sm = ScreenManager()
+        settings_screen = SettingsScreen(name='settings')
+        settings_screen.add_widget(root)
+        sm.add_widget(MenuScreen(name='menu'))
+        sm.add_widget(settings_screen)
+
+        return sm
 
 if __name__ in ('__main__', '__android__'):
     ProSoccerMemApp().run()

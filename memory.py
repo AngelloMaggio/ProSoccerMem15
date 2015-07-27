@@ -109,6 +109,7 @@ class MemoryLayout(GridLayout):
         self.level = kwargs["level"]
         self.items = kwargs["items"]
         self.countdown = self.level
+        Clock.schedule_once(self.start_game, 3)
 
     def toggle_buttons(self, state):
         for i in self.children:
