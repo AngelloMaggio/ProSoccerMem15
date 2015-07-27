@@ -24,7 +24,7 @@ from kivy.core.window import Window
 from game_tools import *
 from labels import *
 
-__version__ = '0.2.00'
+__version__ = '0.2.25'
 
 
 class MemoryButton(Button):
@@ -142,7 +142,8 @@ class MemoryLayout(GridLayout):
 
     def start_game(self, dt):
         self.reset()
-        Clock.schedule_interval(self.initial_countdown, 1)
+        # Clock.schedule_interval(self.initial_countdown, 1)
+        self.game_over(True)
         
     def initial_countdown(self, dt):
         if self.countdown == -1:
@@ -217,8 +218,8 @@ class MemoryLayout(GridLayout):
             user_data = {"items": self.items, "level": self.level}
             json.dump(user_data, fd)
             
-    def game_over(self):
-        
+    def game_over(self, game_starting=False):
+
         # calculate score
         score = str(self.score[0]) + '-' + str(self.score[1])
         print "done!", score
@@ -243,22 +244,26 @@ class MemoryLayout(GridLayout):
         nb_items.bind(value=self.reset_nb_item)
        
         content2.add_widget(content)
-
-        replay_btn = Button(text='Replay!')
+        if game_starting:
+            replay_btn = Button(text='Play!')
+        else:
+            replay_btn = Button(text='Replay!')
         credits_btn = Button(text='Credits')
         action = BoxLayout(orientation='horizontal', size_hint_y=.3)
         action.add_widget(replay_btn)
         action.add_widget(credits_btn)
         content2.add_widget(action)
 
-        if self.score[0] > self.score[1]:
-            greeting = "Congratulations!"
+        if game_starting:
+            greeting = "Welcome to Pro Soccer Mem 15. Choose your game mode:"
+        elif self.score[0] > self.score[1]:
+            greeting = "Congratulations!" + ' Your score was: %s' % str(score)
         elif self.score[1] > self.score[0]:
-            greeting = "Oh no! You've been defeated."
+            greeting = "Oh no! You've been defeated." + ' Your score was: %s' % str(score)
         else:
-            greeting = "What a game, it was a tie!"
+            greeting = "What a game, it was a tie!" + ' Your score was: %s' % str(score)
 
-        popup = PopupGameOver(title=greeting + ' Your score was: %s' % str(score),
+        popup = PopupGameOver(title=greeting,
                               content=content2,
                               size_hint=(0.5, 0.5), pos_hint={'x': 0.25, 'y': 0.25},
                               auto_dismiss=False)

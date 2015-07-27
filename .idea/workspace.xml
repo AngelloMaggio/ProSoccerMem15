@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b222a456-d233-4fc9-a3b5-e16614eae626" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game_tools.py" afterPath="$PROJECT_DIR$/game_tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labels.py" afterPath="$PROJECT_DIR$/labels.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/prosoccermem.kv" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SoccerMem.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,31 +31,38 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6957747" vertical-offset="221" max-vertical-offset="2088">
+            <state vertical-scroll-proportion="0.64507043" vertical-offset="239" max-vertical-offset="3078">
               <caret line="26" column="21" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
               <folding>
                 <element signature="e#1226#1374#0" expanded="false" />
                 <element signature="e#1432#1678#0" expanded="false" />
                 <element signature="e#1742#1871#0" expanded="false" />
-                <element signature="e#4407#10233#0" expanded="false" />
+                <element signature="e#1905#4368#0" expanded="false" />
                 <element signature="e#4812#5016#0" expanded="false" />
                 <element signature="e#5063#5205#0" expanded="false" />
                 <element signature="e#5243#5383#0" expanded="false" />
                 <element signature="e#5433#5503#0" expanded="false" />
                 <element signature="e#5557#5575#0" expanded="false" />
-                <element signature="e#5615#5686#0" expanded="false" />
-                <element signature="e#5741#6425#0" expanded="false" />
-                <element signature="e#6482#6509#0" expanded="false" />
-                <element signature="e#6566#6590#0" expanded="false" />
-                <element signature="e#6621#6863#0" expanded="false" />
-                <element signature="e#6917#7016#0" expanded="false" />
-                <element signature="e#7058#7907#0" expanded="false" />
-                <element signature="e#7943#8154#0" expanded="false" />
-                <element signature="e#8210#10233#0" expanded="false" />
-                <element signature="e#10279#11247#0" expanded="false" />
-                <element signature="e#11283#11876#0" expanded="false" />
-                <element signature="e#11920#13674#0" expanded="false" />
+                <element signature="e#5772#6456#0" expanded="false" />
+                <element signature="e#6513#6540#0" expanded="false" />
+                <element signature="e#6597#6621#0" expanded="false" />
+                <element signature="e#6948#7047#0" expanded="false" />
+                <element signature="e#7089#7938#0" expanded="false" />
+                <element signature="e#7974#8185#0" expanded="false" />
+                <element signature="e#10592#11560#0" expanded="false" />
+                <element signature="e#11596#12189#0" expanded="false" />
+                <element signature="e#12233#13987#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="prosoccermem.kv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/prosoccermem.kv">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="216">
+              <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -108,6 +115,8 @@
         <option value="$PROJECT_DIR$/config.py" />
         <option value="$PROJECT_DIR$/labels.py" />
         <option value="$PROJECT_DIR$/game_tools.py" />
+        <option value="$PROJECT_DIR$/ProSoccerMem.kv" />
+        <option value="$PROJECT_DIR$/prosoccermem.kv" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
@@ -214,6 +223,25 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
+    <configuration default="false" name="docutils task in prosoccermem.kv" type="docs" factoryName="Docutils task" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SoccerMem" />
+      <option name="docutils_input_file" value="$PROJECT_DIR$/prosoccermem.kv" />
+      <option name="docutils_output_file" value="$PROJECT_DIR$/prosoccermem.html" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="rst2html" />
+      <option name="docutils_open_in_browser" value="true" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -257,6 +285,23 @@
       <option name="USE_PATTERN" value="false" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SoccerMem" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -336,14 +381,16 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Python.main" />
       <item index="1" class="java.lang.String" itemvalue="Python.game_tools" />
+      <item index="2" class="java.lang.String" itemvalue="Python docs.docutils task in prosoccermem.kv" />
     </list>
     <recent_temporary>
-      <list size="2">
+      <list size="3">
         <item index="0" class="java.lang.String" itemvalue="Python.main" />
-        <item index="1" class="java.lang.String" itemvalue="Python.game_tools" />
+        <item index="1" class="java.lang.String" itemvalue="Python docs.docutils task in prosoccermem.kv" />
+        <item index="2" class="java.lang.String" itemvalue="Python.game_tools" />
       </list>
     </recent_temporary>
   </component>
@@ -403,7 +450,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="7" />
+      <option name="time" value="12" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -416,24 +463,21 @@
             <element signature="e#1226#1374#0" expanded="false" />
             <element signature="e#1432#1678#0" expanded="false" />
             <element signature="e#1742#1871#0" expanded="false" />
-            <element signature="e#4407#10233#0" expanded="false" />
+            <element signature="e#1905#4368#0" expanded="false" />
             <element signature="e#4812#5016#0" expanded="false" />
             <element signature="e#5063#5205#0" expanded="false" />
             <element signature="e#5243#5383#0" expanded="false" />
             <element signature="e#5433#5503#0" expanded="false" />
             <element signature="e#5557#5575#0" expanded="false" />
-            <element signature="e#5615#5686#0" expanded="false" />
-            <element signature="e#5741#6425#0" expanded="false" />
-            <element signature="e#6482#6509#0" expanded="false" />
-            <element signature="e#6566#6590#0" expanded="false" />
-            <element signature="e#6621#6863#0" expanded="false" />
-            <element signature="e#6917#7016#0" expanded="false" />
-            <element signature="e#7058#7907#0" expanded="false" />
-            <element signature="e#7943#8154#0" expanded="false" />
-            <element signature="e#8210#10233#0" expanded="false" />
-            <element signature="e#10279#11247#0" expanded="false" />
-            <element signature="e#11283#11876#0" expanded="false" />
-            <element signature="e#11920#13674#0" expanded="false" />
+            <element signature="e#5772#6456#0" expanded="false" />
+            <element signature="e#6513#6540#0" expanded="false" />
+            <element signature="e#6597#6621#0" expanded="false" />
+            <element signature="e#6948#7047#0" expanded="false" />
+            <element signature="e#7089#7938#0" expanded="false" />
+            <element signature="e#7974#8185#0" expanded="false" />
+            <element signature="e#10592#11560#0" expanded="false" />
+            <element signature="e#11596#12189#0" expanded="false" />
+            <element signature="e#12233#13987#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -456,6 +500,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/game_tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1836">
+          <caret line="79" column="27" selection-start-line="79" selection-start-column="27" selection-end-line="79" selection-end-column="27" />
+          <folding>
+            <element signature="e#65#86#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/labels.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="684">
@@ -469,42 +523,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game_tools.py">
+    <entry file="file://$PROJECT_DIR$/prosoccermem.kv">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1836">
-          <caret line="79" column="27" selection-start-line="79" selection-start-column="27" selection-end-line="79" selection-end-column="27" />
-          <folding>
-            <element signature="e#65#86#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="216">
+          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6957747" vertical-offset="221" max-vertical-offset="2088">
+        <state vertical-scroll-proportion="0.64507043" vertical-offset="239" max-vertical-offset="3078">
           <caret line="26" column="21" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
           <folding>
             <element signature="e#1226#1374#0" expanded="false" />
             <element signature="e#1432#1678#0" expanded="false" />
             <element signature="e#1742#1871#0" expanded="false" />
-            <element signature="e#4407#10233#0" expanded="false" />
+            <element signature="e#1905#4368#0" expanded="false" />
             <element signature="e#4812#5016#0" expanded="false" />
             <element signature="e#5063#5205#0" expanded="false" />
             <element signature="e#5243#5383#0" expanded="false" />
             <element signature="e#5433#5503#0" expanded="false" />
             <element signature="e#5557#5575#0" expanded="false" />
-            <element signature="e#5615#5686#0" expanded="false" />
-            <element signature="e#5741#6425#0" expanded="false" />
-            <element signature="e#6482#6509#0" expanded="false" />
-            <element signature="e#6566#6590#0" expanded="false" />
-            <element signature="e#6621#6863#0" expanded="false" />
-            <element signature="e#6917#7016#0" expanded="false" />
-            <element signature="e#7058#7907#0" expanded="false" />
-            <element signature="e#7943#8154#0" expanded="false" />
-            <element signature="e#8210#10233#0" expanded="false" />
-            <element signature="e#10279#11247#0" expanded="false" />
-            <element signature="e#11283#11876#0" expanded="false" />
-            <element signature="e#11920#13674#0" expanded="false" />
+            <element signature="e#5772#6456#0" expanded="false" />
+            <element signature="e#6513#6540#0" expanded="false" />
+            <element signature="e#6597#6621#0" expanded="false" />
+            <element signature="e#6948#7047#0" expanded="false" />
+            <element signature="e#7089#7938#0" expanded="false" />
+            <element signature="e#7974#8185#0" expanded="false" />
+            <element signature="e#10592#11560#0" expanded="false" />
+            <element signature="e#11596#12189#0" expanded="false" />
+            <element signature="e#12233#13987#0" expanded="false" />
           </folding>
         </state>
       </provider>
