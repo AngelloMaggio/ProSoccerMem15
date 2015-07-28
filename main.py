@@ -14,7 +14,7 @@ from memory import *
 from game_tools import *
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-__version__ = '0.2.75'
+__version__ = '0.3.0'
 
 
 class MenuScreen(Screen):
@@ -22,7 +22,8 @@ class MenuScreen(Screen):
 
 
 class SettingsScreen(Screen):
-    pass
+    def on_enter(self):
+        g.start_game(3)
 
 
 class ProSoccerMemApp(App):
@@ -33,19 +34,12 @@ class ProSoccerMemApp(App):
         self.icon = 'memoIcon.png'
         self.title = 'Pro Soccer Mem 15'
 
-
-        #root = FloatLayout()
-        #root.add_widget(Image(source='court.jpg', allow_stretch=True, keep_ratio=False))
-        #root.add_widget(play_zone)
-        #root.add_widget(sm)
-        # Clock.schedule_interval(g.initialCountdown,1)
-
         items, level = load_level()
 
         g = MemoryLayout(rows=4, items=items, level=level, size_hint=(1, .9))
         config = BoxLayout(orientation='horizontal', spacing=10, size_hint=(1, .1))
         narrate_box = BoxLayout(orientation='horizontal', spacing=10, size_hint=(1, .1))
-
+        global g
         sound = ToggleButton(text='Sound On', size_hint=(0.15, 1))
         sound.bind(on_press=MemoryButton.toggle_sound)
 

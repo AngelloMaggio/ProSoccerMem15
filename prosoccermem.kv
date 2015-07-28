@@ -1,10 +1,41 @@
 <MenuScreen>:
+
+
     BoxLayout:
-        Button:
-            text: 'Play!'
-            on_press: root.manager.current = 'settings'
-        Button:
-            text: 'Quit'
+
+        canvas:
+            Color:
+                rgba: 1, 1, 1, 1
+
+        orientation: 'vertical'
+        spacing: 10
+        Image:
+            source: './splash.png'
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: 10
+                Button:
+                    text: 'Play!'
+                    on_press: root.manager.current = 'settings'
+                    size_hint: 1, .1
+                Button:
+                    text: 'Credits'
+                    size_hint: 1, .1
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: 10
+                Button:
+                    text: 'Settings'
+                    on_press: root.manager.current = 'settings'
+                    size_hint: 1, .1
+                Button:
+                    text: 'Quit'
+                    on_press: sys.exit()
+                    size_hint: 1, .1
+
 
 <MemoryButton>:
     background_down: './back.png'
