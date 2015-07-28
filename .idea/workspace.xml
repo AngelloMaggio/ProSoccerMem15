@@ -5,7 +5,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/memory.py" afterPath="$PROJECT_DIR$/memory.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prosoccermem.kv" afterPath="$PROJECT_DIR$/prosoccermem.kv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SoccerMem.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,11 +28,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.18413597" vertical-offset="223" max-vertical-offset="1584">
-              <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+            <state vertical-scroll-proportion="-6.096774" vertical-offset="1179" max-vertical-offset="1584">
+              <caret line="76" column="38" selection-start-line="76" selection-start-column="38" selection-end-line="76" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -43,21 +42,20 @@
         <entry file="file://$PROJECT_DIR$/prosoccermem.kv">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1062">
-              <caret line="12" column="34" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
+              <caret line="19" column="63" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="63" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="memory.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="memory.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/memory.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-21.258064" vertical-offset="97" max-vertical-offset="3744">
-              <caret line="110" column="35" selection-start-line="110" selection-start-column="35" selection-end-line="110" selection-end-column="35" />
+            <state vertical-scroll-proportion="-0.22379604" vertical-offset="3751" max-vertical-offset="4104">
+              <caret line="272" column="9" selection-start-line="272" selection-start-column="9" selection-end-line="272" selection-end-column="9" />
               <folding>
                 <element signature="e#30#64#0" expanded="true" />
                 <element signature="e#693#3847#0" expanded="false" />
-                <element signature="e#10176#10761#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -129,9 +127,9 @@
         <option value="$PROJECT_DIR$/labels.py" />
         <option value="$PROJECT_DIR$/narrator.py" />
         <option value="$PROJECT_DIR$/game_tools.py" />
-        <option value="$PROJECT_DIR$/memory.py" />
         <option value="$PROJECT_DIR$/prosoccermem.kv" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/memory.py" />
       </list>
     </option>
   </component>
@@ -532,7 +530,14 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="19" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="20" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -560,7 +565,6 @@
           <folding>
             <element signature="e#30#64#0" expanded="true" />
             <element signature="e#693#3847#0" expanded="false" />
-            <element signature="e#10176#10761#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -675,31 +679,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/memory.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.258064" vertical-offset="97" max-vertical-offset="3744">
-          <caret line="110" column="35" selection-start-line="110" selection-start-column="35" selection-end-line="110" selection-end-column="35" />
-          <folding>
-            <element signature="e#30#64#0" expanded="true" />
-            <element signature="e#693#3847#0" expanded="false" />
-            <element signature="e#10176#10761#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="-6.096774" vertical-offset="1179" max-vertical-offset="1584">
+          <caret line="76" column="38" selection-start-line="76" selection-start-column="38" selection-end-line="76" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/prosoccermem.kv">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1062">
-          <caret line="12" column="34" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
+          <caret line="19" column="63" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="63" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/memory.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18413597" vertical-offset="223" max-vertical-offset="1584">
-          <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
-          <folding />
+        <state vertical-scroll-proportion="-0.22379604" vertical-offset="3751" max-vertical-offset="4104">
+          <caret line="272" column="9" selection-start-line="272" selection-start-column="9" selection-end-line="272" selection-end-column="9" />
+          <folding>
+            <element signature="e#30#64#0" expanded="true" />
+            <element signature="e#693#3847#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

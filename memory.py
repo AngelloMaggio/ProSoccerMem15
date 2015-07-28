@@ -260,9 +260,11 @@ class MemoryLayout(GridLayout):
                               size_hint=(0.5, 0.5), pos_hint={'x': 0.25, 'y': 0.25},
                               auto_dismiss=False)
 
+
+
         replay_btn.bind(on_press=popup.replay)
         replay_btn.bind(on_press=self.restart_game)
-        credits_btn.bind(on_press=popup.credits)
+        credits_btn.bind(on_press=self.change_view('menu'))
         popup.open()
 
 
