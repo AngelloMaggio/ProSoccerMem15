@@ -1,10 +1,8 @@
 <MenuScreen>:
     BoxLayout:
-
         canvas:
             Color:
                 rgba: 1, 1, 1, 1
-
         orientation: 'vertical'
         spacing: 10
         Image:
@@ -21,6 +19,7 @@
                     size_hint: 1, .1
                 Button:
                     text: 'Credits'
+                    on_press: root.manager.current = 'credits'
                     size_hint: 1, .1
             BoxLayout:
                 orientation: 'vertical'
@@ -31,9 +30,8 @@
                     size_hint: 1, .1
                 Button:
                     text: 'Quit'
-                    on_press: sys.exit()
+                    on_press: exit
                     size_hint: 1, .1
-
 
 <MemoryButton>:
     background_down: './back.png'
@@ -49,5 +47,9 @@
             pos: self.pos
             size: self.size
 
+<MemoryLayout>:
+
 <PopupGameOver>:
+
+
 

@@ -111,7 +111,6 @@ class MemoryLayout(GridLayout):
         self.countdown = self.level
         # Clock.schedule_once(self.start_game, 3)
 
-
     def toggle_buttons(self, state):
         for i in self.children:
             i.background_down, i.background_normal = i.background_normal, i.background_down
@@ -240,10 +239,14 @@ class MemoryLayout(GridLayout):
         else:
             self.narration = "What a game!"
             replay_btn = Button(text='Replay!')
-        credits_btn = Button(text='Credits')
+
+        menu_btn = Button(text='Go Back')
+        creds_btn = Button(text='Credits')
+
         action = BoxLayout(orientation='horizontal', size_hint_y=.3)
         action.add_widget(replay_btn)
-        action.add_widget(credits_btn)
+        action.add_widget(menu_btn)
+        action.add_widget(creds_btn)
         content2.add_widget(action)
 
         if game_starting:
@@ -260,20 +263,24 @@ class MemoryLayout(GridLayout):
                               size_hint=(0.5, 0.5), pos_hint={'x': 0.25, 'y': 0.25},
                               auto_dismiss=False)
 
-
-
         replay_btn.bind(on_press=popup.replay)
         replay_btn.bind(on_press=self.restart_game)
-        credits_btn.bind(on_press=self.change_view('menu'))
+        menu_btn.bind(on_press=lambda _: popup.change_view('menu', self))
+        creds_btn.bind(on_press=show_credits)
         popup.open()
 
 
 class PopupGameOver(Popup):
 
+    def change_view(self, view, root):
+        root.parent.parent.parent.parent.current = view
+        self.dismiss()
+
     def replay(self, inst):
         self.dismiss()
 
-    def credits(self, inst):
+
+def show_credits(_):
 
         with open(join(dirname(__file__), 'credits'), 'r') as f:
             ti = f.read()

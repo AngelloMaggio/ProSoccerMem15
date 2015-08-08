@@ -26,6 +26,27 @@ class SettingsScreen(Screen):
         g.start_game(3)
 
 
+class CreditsScreen(Screen):
+    def on_enter(self):
+        with open(join(dirname(__file__), 'credits'), 'r') as f:
+            ti = f.read()
+        content = BoxLayout(orientation='vertical')
+        close = Button(text='Close', size_hint=(1, .1))
+        sv = ScrollableLabel().build(ti, Window.width-20)
+        content.add_widget(sv)
+        content.add_widget(close)
+        popup = Popup(title='Credits:',
+                      content=content, auto_dismiss=False
+                      )
+        close.bind(on_release=popup.dismiss)
+        close.bind(on_press=go_back)
+        popup.open()
+
+
+def go_back(self, _):
+    sm.current = 'menu'
+
+
 class ProSoccerMemApp(App):
         
     def build(self):
@@ -71,9 +92,13 @@ class ProSoccerMemApp(App):
 
         # Screen manager
         sm = ScreenManager()
+        global sm
         settings_screen = SettingsScreen(name='settings')
         settings_screen.add_widget(root)
+
         sm.add_widget(MenuScreen(name='menu'))
+        sm.add_widget(CreditsScreen(name='credits'))
+
         sm.add_widget(settings_screen)
 
         return sm
