@@ -14,7 +14,7 @@ from memory import *
 from game_tools import *
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-__version__ = '0.3.25'
+__version__ = '0.3.5'
 
 
 class MenuScreen(Screen):
@@ -39,12 +39,8 @@ class CreditsScreen(Screen):
                       content=content, auto_dismiss=False
                       )
         close.bind(on_release=popup.dismiss)
-        close.bind(on_press=go_back)
+        close.bind(on_press=lambda _: go_back(sm))
         popup.open()
-
-
-def go_back(self, _):
-    sm.current = 'menu'
 
 
 class ProSoccerMemApp(App):

@@ -51,15 +51,15 @@ def load_data():
 
 
 def load_level():
-        #try:
-            #file_name = join(App.get_running_app().user_data_dir, 'level.dat')
-            #with open(file_name) as fd:
-             #   user_data = json.load(fd)
-                #return user_data["items"], user_data["level"]
-        return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
+        try:
+            file_name = join(App.get_running_app().user_data_dir, 'level.dat')
+            with open(file_name) as fd:
+                user_data = json.load(fd)
+                return user_data["items"], user_data["level"]
+        #return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
 
-        #except IOError:
-        #    return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
+        except IOError:
+            return DEFAULT_NBITEMS, DEFAULT_SHOWTIME
 
 
 def show_missing_sounds(sounds, icons):
@@ -70,3 +70,6 @@ def show_missing_sounds(sounds, icons):
             missing.append(s)
     print "missing sounds for %d players: %s" % (len(missing), missing)
 
+
+def go_back(sm):
+    sm.current = 'menu'
