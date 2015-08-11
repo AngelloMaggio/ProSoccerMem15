@@ -14,7 +14,7 @@ from memory import *
 from game_tools import *
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-__version__ = '0.3.5'
+__version__ = '0.4.0'
 
 
 class MenuScreen(Screen):
@@ -87,8 +87,9 @@ class ProSoccerMemApp(App):
         root.add_widget(play_zone)
 
         # Screen manager
-        sm = ScreenManager()
         global sm
+        sm = ScreenManager()
+
         settings_screen = SettingsScreen(name='settings')
         settings_screen.add_widget(root)
 

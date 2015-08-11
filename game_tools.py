@@ -39,14 +39,16 @@ def best_ratio(nb, width, height):
 def load_data():
     sounds = {}
     icons = []
+    player_objects = []
     for s in glob(join(dirname(__file__), "sounds", '*.wav')):
         name = basename(s[:-4]).split("_")[0]
-        if sounds.has_key(name):
+        if name in sounds:
             sounds[name].append(s)
         else:
             sounds[name] = [s]
     for i in glob(join(dirname(__file__), "icons", '*.png')):
         icons.append(i)
+
     return sounds, icons
 
 

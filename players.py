@@ -5,8 +5,8 @@ Copyright (c) 2015, Angello Maggio
 All rights reserved.
 """
 
-players = [
-    {
+players = {
+    'aguero': {
         'name': 'Kun Aguero',
         'status': '',
         'id': 'aguero',
@@ -27,7 +27,7 @@ players = [
 
     },
 
-    {
+    'alexis': {
         'name': 'Alexis Sanchez',
         'status': '',
         'id': 'alexis',
@@ -48,7 +48,7 @@ players = [
 
     },
 
-    {
+    'bale': {
         'name': 'Gareth Bale',
         'status': '',
         'id': 'bale',
@@ -69,7 +69,7 @@ players = [
 
     },
 
-    {
+    'bravo': {
         'name': 'Claudio Bravo',
         'status': '',
         'id': 'bravo',
@@ -90,7 +90,7 @@ players = [
 
     },
 
-    {
+    'buffon': {
         'name': 'Gigi Buffon',
         'status': '',
         'id': 'buffon',
@@ -111,7 +111,7 @@ players = [
 
     },
 
-    {
+    'casillas': {
         'name': 'Iker Casillas',
         'status': '',
         'id': 'casillas',
@@ -132,7 +132,7 @@ players = [
 
     },
 
-    {
+    'cavani': {
         'name': 'Edison Cavani',
         'status': '',
         'id': 'cavani',
@@ -153,7 +153,7 @@ players = [
 
     },
 
-    {
+    'falcao': {
         'name': 'Radamel Falcao',
         'status': '',
         'id': 'falcao',
@@ -174,7 +174,7 @@ players = [
 
     },
 
-    {
+    'hazard': {
         'name': 'Eden hazard',
         'status': '',
         'id': 'hazard',
@@ -195,7 +195,7 @@ players = [
 
     },
 
-    {
+    'ibrahimovic': {
         'name': 'Ibrahimovic',
         'status': '',
         'id': 'ibrahimovic',
@@ -216,7 +216,7 @@ players = [
 
     },
 
-    {
+    'iniesta': {
         'name': 'Andres Iniesta',
         'status': '',
         'id': 'iniesta',
@@ -237,7 +237,7 @@ players = [
 
     },
 
-    {
+    'james': {
         'name': 'James Rodriguez',
         'status': '',
         'id': 'james',
@@ -258,7 +258,7 @@ players = [
 
     },
 
-    {
+    'lahm': {
         'name': 'Philipp Lahm',
         'status': '',
         'id': 'lahm',
@@ -279,7 +279,7 @@ players = [
 
     },
 
-    {
+    'messi': {
         'name': 'Lionel Messi',
         'status': '',
         'id': 'messi',
@@ -300,7 +300,7 @@ players = [
 
     },
 
-    {
+    'muller': {
         'name': 'Thomas Muller',
         'status': '',
         'id': 'muller',
@@ -321,7 +321,7 @@ players = [
 
     },
 
-    {
+    'neymar': {
         'name': 'Neymar',
         'status': '',
         'id': 'neymar',
@@ -342,7 +342,7 @@ players = [
 
     },
 
-    {
+    'ozil': {
         'name': 'Mesut Ozil',
         'status': '',
         'id': 'ozil',
@@ -363,7 +363,7 @@ players = [
 
     },
 
-    {
+    'pirlo': {
         'name': 'Andrea Pirlo',
         'status': '',
         'id': 'pirlo',
@@ -384,7 +384,7 @@ players = [
 
     },
 
-    {
+    'pogba': {
         'name': 'Paul Pogba',
         'status': '',
         'id': 'pogba',
@@ -405,7 +405,7 @@ players = [
 
     },
 
-    {
+    'ramos': {
         'name': 'Sergio Ramos',
         'status': '',
         'id': 'ramos',
@@ -426,7 +426,7 @@ players = [
 
     },
 
-    {
+    'robben': {
         'name': 'Robben',
         'status': '',
         'id': 'robben',
@@ -447,7 +447,7 @@ players = [
 
     },
 
-    {
+    'ronaldinho': {
         'name': 'Ronaldinho',
         'status': '',
         'id': 'ronaldinho',
@@ -468,7 +468,7 @@ players = [
 
     },
 
-    {
+    'ronaldo': {
         'name': 'Cristiano Ronaldo',
         'status': '',
         'id': 'ronaldo',
@@ -489,7 +489,7 @@ players = [
 
     },
 
-    {
+    'rooney': {
         'name': 'Wayne Rooney',
         'status': '',
         'id': 'rooney',
@@ -510,7 +510,7 @@ players = [
 
     },
 
-    {
+    'sterling': {
         'name': 'Raheem Sterling',
         'status': '',
         'id': 'sterling',
@@ -531,7 +531,7 @@ players = [
 
     },
 
-    {
+    'suarez': {
         'name': 'Luis Suarez',
         'status': '',
         'id': 'suarez',
@@ -552,7 +552,7 @@ players = [
 
     },
 
-    {
+    'vanpersie': {
         'name': 'Van Persie',
         'status': '',
         'id': 'vanpersie',
@@ -573,7 +573,7 @@ players = [
 
     },
 
-    {
+    'vidal': {
         'name': 'Arturo Vidal',
         'status': '',
         'id': 'vidal',
@@ -594,7 +594,7 @@ players = [
 
     },
 
-    {
+    'xavi': {
         'name': 'Xavi Hernandez',
         'status': '',
         'id': 'xavi',
@@ -615,7 +615,7 @@ players = [
 
     },
 
-    {
+    'yayatoure': {
         'name': 'Yaya Toure',
         'status': '',
         'id': 'yayatoure',
@@ -637,4 +637,4 @@ players = [
     },
 
 
-    ]
+    }

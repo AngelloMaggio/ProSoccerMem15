@@ -16,6 +16,7 @@ from labels import *
 from config import *
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
+from players import players
 
 sounds, icons = load_data()
 MAX_NBITEMS = len(icons)
@@ -58,7 +59,7 @@ class MemoryButton(Button):
 
                 elif self.parent.first.filenameIcon == self.filenameIcon:
 
-                    self.parent.ball_position, self.parent.narration = narrate(self.parent.ball_position, True)
+                    self.parent.ball_position, self.parent.narration = narrate(self.parent.ball_position, True, self.filenameIcon.split('/')[-1][:-4])
 
                     if self.parent.ball_position > 3:
                         self.parent.score = self.parent.score[0]+1, self.parent.score[1]
@@ -82,7 +83,7 @@ class MemoryButton(Button):
                         Clock.unschedule(self.parent.elapsed_time)
 
                 else:
-                    self.parent.ball_position, self.parent.narration = narrate(self.parent.ball_position, False)
+                    self.parent.ball_position, self.parent.narration = narrate(self.parent.ball_position, False, self.filenameIcon.split('/')[-1][:-4])
                     if self.parent.ball_position < -3:
                         self.parent.score = self.parent.score[0], self.parent.score[1]+1
                         self.parent.ball_position = 0
